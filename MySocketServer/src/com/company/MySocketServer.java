@@ -35,7 +35,7 @@ public class MySocketServer extends Thread{
             PrintWriter writer = new PrintWriter(out, true);
 
             //클라이언트에게 연결됐다는 메세지 보내기
-            writer.println("서버에 연결되었습니다. ID를 입력해주세");
+            writer.println("서버에 연결되었습니다. ID를 입력해주세요");
 
             String readValue; // Client 에서 보낸 값 저장
             String name = null; // 클라이언트 이름 설정용
