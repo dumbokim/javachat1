@@ -65,7 +65,7 @@ public class MySocketServer extends Thread{
 
     public static void main(String[] args) {
         try {
-            int socketPort = 1234;
+            int socketPort = 8080;
             ServerSocket serverSocket = new ServerSocket(socketPort);
 
             //서버 오픈 확인용
