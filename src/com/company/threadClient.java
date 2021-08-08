@@ -19,7 +19,13 @@ public class threadClient extends Thread{
             BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
 
             while(true) {
-                System.out.println(reader.readLine());
+                String readValue = reader.readLine();
+                if (readValue.equals("quit")) {
+                    System.out.println("접속이 종료됩니다");
+                    break;
+                } else {
+                    System.out.println(readValue);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,17 +46,15 @@ public class threadClient extends Thread{
             Scanner scanner = new Scanner(System.in); //채팅용 scanner
             while(true) {
                 try {
-
                     PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+                    // 무한반복하면서 입력 수행
                     while(true) {
                         writer.println(scanner.nextLine()); //입력한 메세지 발송
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -51,6 +51,8 @@ public class MySocketServer extends Thread{
 
             String readValue; // Client 에서 보낸 값 저장
             String name = null; // 클라이언트 이름 설정용
+            Socket theSocket = null; // 본인 소켓 담기
+            String quit = "quit";
             boolean identify = false;
 
             //클라이언트가 메세지 입력시마다 수행 (!! 입력을 받을 때마다 name을 어떻게 구별하는지 잘 모르겠음 !!)
@@ -60,7 +62,21 @@ public class MySocketServer extends Thread{
                 if (!identify) {
                     name = readValue; // 이름 할당
                     identify = true;
+                    theSocket = socket;
                     writer.println(name + "님이 접속하셨습니다.");
+                    continue;
+                }
+
+                if (readValue.equals("quit")) {
+                    System.out.println("it push quit");
+                    for (int i = 0; i < list.size(); i++) {
+                        if (theSocket == list.get(i)) {
+                            out = list.get(i).getOutputStream();
+                            writer = new PrintWriter(out, true);
+                            writer.println("you are fired");
+                            list.remove(theSocket);
+                        }
+                    }
                     continue;
                 }
 
@@ -71,14 +87,18 @@ public class MySocketServer extends Thread{
                     writer = new PrintWriter(out, true);
                     //클라이언트에게 메세지 발송
                     writer.println(name + " : " + readValue);
-                    writer.println(list);
+//                    writer.println(list);
+//                    writer.println(theSocket);
+//                    writer.println(list.get(i));
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace(); //예외처리
         }
     }
 
+    // 실행 코드
     public static void main(String[] args) {
         // 예외처리를 위한 try - catch 구문
         try {
@@ -95,9 +115,12 @@ public class MySocketServer extends Thread{
                 //Thread 안에 클라이언트 정보를 담아줌
                 Thread thd = new MySocketServer(socketUser);
                 thd.start(); // Thread 시작
+                System.out.println();
             }
         } catch (IOException e) { // IOException 발생 시 이를 처리
             e.printStackTrace(); // 에러 메세지의 발생 근원지를 찾아서 단계별로 에러를 출력한다.
         }
     }
+
+
 }
